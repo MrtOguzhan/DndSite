@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Oyun Oluştur - Dice & Role</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { cinzel: ['Cinzel', 'serif'], inter: ['Inter', 'sans-serif'] },
+                    colors: { gold: '#d4af37', mutedPurple: '#3f3545' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1a1714;
+            background-image: radial-gradient(circle at center, #2a2420 0%, #120f0c 100%);
+        }
+    </style>
+</head>
+<body class="font-inter text-gray-300 min-h-screen flex items-center justify-center p-6 selection:bg-gold selection:text-black">
+
+    <a href="index.html" class="absolute left-6 top-8 font-cinzel font-bold text-gold hover:text-white flex items-center gap-2 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        İptal Et
+    </a>
+
+    <div class="bg-black/40 backdrop-blur-md p-10 rounded-sm border border-gold/40 shadow-[0_0_30px_rgba(212,175,55,0.1)] w-full max-w-md">
+        <h1 class="font-cinzel text-3xl font-bold text-center text-gold mb-8 drop-shadow-md">Yeni Oyun Kaydı</h1>
+        
+        <form id="yeniOyunFormu" class="flex flex-col gap-6">
+            <div>
+                <label class="block font-cinzel text-sm text-gray-400 mb-2">Oyunun İsmi</label>
+                <input type="text" id="oyunIsmi" required placeholder="Örn: Cyberpunk 2077" class="w-full bg-[#120f0c] border border-gray-600 focus:border-gold text-white px-4 py-3 rounded-sm outline-none transition-colors">
+            </div>
+
+            <div>
+                <label class="block font-cinzel text-sm text-gray-400 mb-2">Oyunun Türü</label>
+                <input type="text" id="oyunTuru" required placeholder="Örn: Bilim Kurgu RPG" class="w-full bg-[#120f0c] border border-gray-600 focus:border-gold text-white px-4 py-3 rounded-sm outline-none transition-colors">
+            </div>
+
+            <button type="submit" class="mt-4 bg-gold/10 hover:bg-gold/20 border-2 border-gold text-gold font-cinzel font-bold py-3 px-4 rounded-sm transition-all duration-300 hover:shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                Maceraya Başla
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('yeniOyunFormu').addEventListener('submit', function(e) {
+            e.preventDefault(); // Sayfanın yenilenmesini engeller
+            
+            const isim = document.getElementById('oyunIsmi').value;
+            const tur = document.getElementById('oyunTuru').value;
+
+            // Tarayıcı hafızasından eski oyunları al, yoksa boş dizi oluştur
+            let kayitliOyunlar = JSON.parse(localStorage.getItem('oyunlar')) || [];
+            
+            // Yeni oyunu listeye ekle
+            kayitliOyunlar.push({ isim: isim, tur: tur });
+            
+            // Listeyi tekrar tarayıcı hafızasına kaydet
+            localStorage.setItem('oyunlar', JSON.stringify(kayitliOyunlar));
+
+            // Ana sayfaya yönlendir
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
