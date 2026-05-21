@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap - Dice & Role</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: '#d4af37',
+                        darkGold: '#aa8822',
+                        mutedPurple: '#3f3545',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1a1714;
+            background-image: radial-gradient(circle at center, #2a2420 0%, #120f0c 100%);
+        }
+        
+        .ornate-borders::before, .ornate-borders::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .ornate-borders::before {
+            top: 6px; left: 6px;
+            border-top-color: inherit;
+            border-left-color: inherit;
+        }
+        .ornate-borders::after {
+            bottom: 6px; right: 6px;
+            border-bottom-color: inherit;
+            border-right-color: inherit;
+        }
+    </style>
+</head>
+<body class="font-inter text-gray-300 min-h-screen flex flex-col items-center justify-center selection:bg-gold selection:text-black relative">
+
+    <a href="index.html" class="absolute left-6 top-8 z-50 font-cinzel font-bold text-gold hover:text-white flex items-center gap-2 transition cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        Ana Sayfa
+    </a>
+
+    <main class="w-full max-w-md px-6">
+        
+        <div class="text-center mb-8">
+            <h1 class="font-cinzel text-5xl font-bold tracking-wider text-gold drop-shadow-[0_2px_10px_rgba(212,175,55,0.4)] mb-2">
+                Dice<span class="text-gray-400 text-4xl">&</span>Role
+            </h1>
+            <p class="font-cinzel text-gray-400 tracking-widest text-sm uppercase">Han'ın Kapısı</p>
+        </div>
+
+        <div class="relative bg-black/60 backdrop-blur-md p-8 rounded-sm border border-gold/40 shadow-[0_0_40px_rgba(212,175,55,0.15)] ornate-borders border-t-gold/60 border-l-gold/60 border-r-gold/60 border-b-gold/60">
+            
+            <div id="hataMesaji" class="hidden bg-red-900/80 border border-red-500 text-red-200 px-4 py-3 rounded-sm text-sm mb-6 font-cinzel text-center shadow-[0_0_15px_rgba(220,38,38,0.3)]">
+                Bu mühür geçersiz! Han'a giriş izniniz bulunmuyor.
+            </div>
+
+            <form id="girisFormu" class="flex flex-col gap-6">
+                
+                <div class="flex gap-4">
+                    <label class="flex-1 cursor-pointer">
+                        <input type="radio" name="Giris_Turu" value="Uye_Girisi" class="peer sr-only" checked>
+                        <div class="text-center font-cinzel text-sm text-gray-500 py-3 border-b-2 border-gray-700 peer-checked:text-gold peer-checked:border-gold hover:text-gray-300 transition-all">Üye Girişi</div>
+                    </label>
+                    
+                    <label class="flex-1 cursor-pointer">
+                        <input type="radio" name="Giris_Turu" value="Admin_Girisi" class="peer sr-only">
+                        <div class="text-center font-cinzel text-sm text-gray-500 py-3 border-b-2 border-gray-700 peer-checked:text-[#a83232] peer-checked:border-[#a83232] hover:text-gray-300 transition-all">Admin Girişi</div>
+                    </label>
+                </div>
+
+                <div>
+                    <label class="block font-cinzel text-sm text-gray-400 mb-2 tracking-wide">Karakter E-Postası</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        </div>
+                        <input type="email" id="kullaniciEmail" required placeholder="Örn: maceraci@mail.com" class="w-full bg-[#1a1714] border border-gray-700 focus:border-gold text-white pl-10 pr-4 py-3 rounded-sm outline-none transition-colors shadow-inner placeholder-gray-600">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-cinzel text-sm text-gray-400 tracking-wide mb-2">Parola</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <input type="password" id="kullaniciSifre" required placeholder="••••••••" class="w-full bg-[#1a1714] border border-gray-700 focus:border-gold text-white pl-10 pr-4 py-3 rounded-sm outline-none transition-colors shadow-inner placeholder-gray-600">
+                    </div>
+                </div>
+
+                <button type="submit" class="mt-2 relative group bg-gold/10 border-2 border-gold text-gold font-cinzel font-bold text-lg py-3 px-4 rounded-sm transition-all duration-300 hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] overflow-hidden">
+                    <span class="relative z-10">Han'a Gir</span>
+                </button>
+                
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // 1. İZİN VERİLEN BİLGİLER
+        const izinVerilenEpostalarx = [
+            "admin@diceandrole.com",
+            "kiosk.com", // Kendi test e-postan
+            "test@gmail.com"
+        ];
+
+        // Ortak giriş şifresi
+        const gecerliSifre = "123"; 
+
+        document.getElementById('girisFormu').addEventListener('submit', function(e) {
+            e.preventDefault(); // Sayfanın yenilenmesini ve formun başka bir yere gitmesini tamamen engeller
+
+            const girilenEposta = document.getElementById('kullaniciEmail').value.toLowerCase();
+            const girilenSifre = document.getElementById('kullaniciSifre').value;
+            // Hangi rolün seçildiğini bulalım (Üye mi, Admin mi?)
+            const girisTuru = document.querySelector('input[name="Giris_Turu"]:checked').value;
+            const hataKutusu = document.getElementById('hataMesaji');
+
+            // 2. KONTROL: Hem e-posta listede olmalı hem de şifre eşleşmeli
+            if (izinVerilenEpostalar.includes(girilenEposta) && girilenSifre === gecerliSifre) {
+                hataKutusu.classList.add('hidden');
+
+                // 3. VERİYİ LOCALSTORAGE'A KAYDETME (Localhost Veritabanı Mantığı)
+                const kullaniciVerisi = {
+                    rol: girisTuru,
+                    email: girilenEposta,
+                    girisZamani: new Date().toLocaleString('tr-TR')
+                };
+
+                // Tüm giriş kayıtlarını tutmak için bir dizi oluşturuyoruz
+                let girisLoglari = JSON.parse(localStorage.getItem('girisLoglari')) || [];
+                girisLoglari.push(kullaniciVerisi);
+                localStorage.setItem('girisLoglari', JSON.stringify(girisLoglari)); // Kayıt geçmişini güncelle
+                
+                // Şu anki aktif kullanıcıyı sisteme tanıt
+                localStorage.setItem('aktifKullanici', JSON.stringify(kullaniciVerisi));
+
+                // Profil sayfasına yönlendir
+                window.location.href = 'profile.html';
+                
+            } else {
+                // Bilgiler yanlışsa durdur ve uyar
+                hataKutusu.innerText = "Mühür geçersiz veya parola hatalı! Han'a giriş izniniz bulunmuyor.";
+                hataKutusu.classList.remove('hidden');
+                
+                // Güvenlik için şifre alanını temizle
+                document.getElementById('kullaniciSifre').value = '';
+            }
+        });
+    </script>
+</body>
+</html>

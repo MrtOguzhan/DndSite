@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oyun Ekranı - Dice & Role</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        parchmentBase: '#dcb88e',
+                        inkDark: '#2c1e16',
+                        glassPanel: 'rgba(78, 52, 46, 0.35)', /* Tasarımdaki transparan kahverengi */
+                        gold: '#d4af37',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Eski parşömen kağıdı dokusu */
+        body {
+            background-color: #dcb88e;
+            background-image: 
+                radial-gradient(circle at center, transparent 0%, #a87e50 100%),
+                repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+        }
+
+        /* Süslü köşe çerçeveleri (Karakter Kartı İçin) */
+        .ornate-borders::before, .ornate-borders::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .ornate-borders::before { top: 6px; left: 6px; border-top-color: #d4af37; border-left-color: #d4af37; }
+        .ornate-borders::after { bottom: 6px; right: 6px; border-bottom-color: #d4af37; border-right-color: #d4af37; }
+
+        /* Scrollbar Gizleme/İnceltme */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(44, 30, 22, 0.5); border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen text-inkDark flex flex-col selection:bg-inkDark selection:text-parchmentBase relative overflow-hidden">
+
+    <header class="absolute top-0 left-0 w-full p-6 z-50 flex justify-between items-center">
+        <a href="index.html" class="font-cinzel font-bold text-inkDark hover:text-amber-900 flex items-center gap-2 transition bg-white/10 px-4 py-2 rounded-sm backdrop-blur-sm border border-inkDark/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            Ana Menü
+        </a>
+    </header>
+
+    <main class="w-full h-screen pt-20 pb-8 px-8 flex justify-center items-center">
+        <div class="w-full max-w-7xl h-[85vh] grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
+
+            <div class="lg:col-span-3 h-full flex flex-col items-center justify-start gap-4">
+                
+                <div class="relative w-full aspect-[2/3] bg-[#0c0a09] border-2 border-gold rounded-sm p-3 shadow-2xl ornate-borders overflow-hidden group">
+                    <div class="w-full h-full bg-gradient-to-b from-[#2a3f35] to-[#120f0c] relative border border-gold/30 flex flex-col items-center">
+                        
+                        <div class="absolute top-4 w-3/4 text-center">
+                            <div class="bg-[#dcb88e] border border-[#8b5a2b] shadow-md py-1 px-4 relative font-cinzel font-bold text-[#3e2723] text-lg">
+                                Oğuz
+                                <div class="absolute top-0 -left-2 w-2 h-full bg-[#a87e50] skew-y-12 z-[-1]"></div>
+                                <div class="absolute top-0 -right-2 w-2 h-full bg-[#a87e50] -skew-y-12 z-[-1]"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-32 h-48 text-gold/40" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        </div>
+
+                        <div class="absolute bottom-4 left-4 flex flex-col gap-2">
+                            <div class="flex items-center gap-1 bg-black/60 px-2 py-1 rounded-full border border-red-900/50">
+                                <span class="text-red-500">❤️</span> <span class="text-white font-bold text-sm">24</span>
+                            </div>
+                            <div class="flex items-center gap-1 bg-black/60 px-2 py-1 rounded-full border border-blue-900/50">
+                                <span class="text-blue-400">✨</span> <span class="text-white font-bold text-sm">18</span>
+                            </div>
+                            <div class="flex items-center gap-1 bg-black/60 px-2 py-1 rounded-full border border-gray-600/50">
+                                <span class="text-gray-300">🛡️</span> <span class="text-white font-bold text-sm">12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="font-cinzel font-bold text-[#3e2723] bg-[#eaddc4] border-2 border-[#8b5a2b] shadow-[0_4px_6px_rgba(0,0,0,0.3)] px-10 py-2 rounded-md hover:bg-[#dcb88e] hover:shadow-lg transition-all active:translate-y-1">
+                    Detaylar
+                </button>
+            </div>
+
+            <div class="lg:col-span-6 h-full flex flex-col gap-6">
+                
+                <div class="flex-1 bg-glassPanel backdrop-blur-md border border-[#3e2723]/30 rounded-xl shadow-inner p-6 overflow-y-auto custom-scrollbar">
+                    <h2 class="font-cinzel text-2xl font-bold text-[#2c1e16] border-b border-[#2c1e16]/20 pb-2 mb-4">Temel Nitelikler</h2>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-[#dcb88e]/40 p-3 rounded-md border border-[#8b5a2b]/20 flex justify-between items-center">
+                            <span class="font-bold text-[#3e2723]">Zeka (INT)</span>
+                            <span class="font-cinzel text-xl font-bold text-blue-900">18 (+4)</span>
+                        </div>
+                        <div class="bg-[#dcb88e]/40 p-3 rounded-md border border-[#8b5a2b]/20 flex justify-between items-center">
+                            <span class="font-bold text-[#3e2723]">Dayanıklılık (CON)</span>
+                            <span class="font-cinzel text-xl font-bold text-[#3e2723]">14 (+2)</span>
+                        </div>
+                        <div class="bg-[#dcb88e]/40 p-3 rounded-md border border-[#8b5a2b]/20 flex justify-between items-center">
+                            <span class="font-bold text-[#3e2723]">Çeviklik (DEX)</span>
+                            <span class="font-cinzel text-xl font-bold text-[#3e2723]">13 (+1)</span>
+                        </div>
+                        <div class="bg-[#dcb88e]/40 p-3 rounded-md border border-[#8b5a2b]/20 flex justify-between items-center">
+                            <span class="font-bold text-[#3e2723]">Bilgelik (WIS)</span>
+                            <span class="font-cinzel text-xl font-bold text-[#3e2723]">12 (+1)</span>
+                        </div>
+                    </div>
+
+                    <h3 class="font-cinzel font-bold text-[#2c1e16] mt-6 mb-2">Pasif Yetenekler</h3>
+                    <ul class="list-disc list-inside text-sm text-[#3e2723] space-y-1">
+                        <li><strong>Şövalye Disiplini:</strong> Düzen Şövalyeleri geçmişi sayesinde tarih ve din zarlarında avantaj.</li>
+                        <li><strong>Büyüsel Odaklanma:</strong> Savaş alanında konsantrasyonu bozmak zordur.</li>
+                    </ul>
+                </div>
+
+                <div class="flex-1 bg-glassPanel backdrop-blur-md border border-[#3e2723]/30 rounded-xl shadow-inner p-6 overflow-y-auto custom-scrollbar">
+                    <div class="flex justify-between items-end border-b border-[#2c1e16]/20 pb-2 mb-4">
+                        <h2 class="font-cinzel text-2xl font-bold text-[#2c1e16]">Envanter</h2>
+                        <span class="text-sm font-bold text-[#3e2723]">Ağırlık: 12/40 kg</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-4 bg-[#dcb88e]/30 p-2 rounded-md hover:bg-[#dcb88e]/50 transition-colors">
+                            <div class="w-10 h-10 bg-[#3e2723] rounded flex items-center justify-center text-xl">📖</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-[#2c1e16] leading-tight">Kadim Büyü Kitabı</h4>
+                                <p class="text-xs text-[#4e342e]">İçerisinde 1. ve 2. seviye büyüler barındırır.</p>
+                            </div>
+                            <span class="text-sm font-bold text-[#3e2723]">x1</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 bg-[#dcb88e]/30 p-2 rounded-md hover:bg-[#dcb88e]/50 transition-colors">
+                            <div class="w-10 h-10 bg-[#3e2723] rounded flex items-center justify-center text-xl">🏅</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-[#2c1e16] leading-tight">Şövalye Nişanı</h4>
+                                <p class="text-xs text-[#4e342e]">Topluluğun yetkili mekanik üyelerine verilir.</p>
+                            </div>
+                            <span class="text-sm font-bold text-[#3e2723]">x1</span>
+                        </div>
+
+                        <div class="flex items-center gap-4 bg-[#dcb88e]/30 p-2 rounded-md hover:bg-[#dcb88e]/50 transition-colors">
+                            <div class="w-10 h-10 bg-[#3e2723] rounded flex items-center justify-center text-xl">🧪</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-[#2c1e16] leading-tight">Şifa İksiri</h4>
+                                <p class="text-xs text-[#4e342e]">2d4+2 can yeniler.</p>
+                            </div>
+                            <span class="text-sm font-bold text-[#3e2723]">x3</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:col-span-3 h-full flex flex-col relative">
+                
+                <div class="flex-1 bg-glassPanel backdrop-blur-md border border-[#3e2723]/30 rounded-xl shadow-inner p-6 overflow-y-auto custom-scrollbar mb-20">
+                    <h2 class="font-cinzel text-2xl font-bold text-[#2c1e16] border-b border-[#2c1e16]/20 pb-2 mb-4">Aktif Slotlar</h2>
+                    
+                    <div class="flex flex-col gap-4">
+                        <div class="flex gap-3 items-center">
+                            <div class="w-12 h-12 bg-[#2c1e16] rounded-sm border-2 border-[#8b5a2b] shadow-inner flex justify-center items-center text-xl">🧥</div>
+                            <div class="text-sm text-[#3e2723]">
+                                <span class="font-bold block">Üstlük</span>
+                                Cübbe (AC 11)
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 items-center">
+                            <div class="w-12 h-12 bg-[#2c1e16] rounded-sm border-2 border-[#8b5a2b] shadow-inner flex justify-center items-center text-xl">🪄</div>
+                            <div class="text-sm text-[#3e2723]">
+                                <span class="font-bold block">Sağ El</span>
+                                Meşe Asa (1d6)
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 items-center">
+                            <div class="w-12 h-12 bg-[#2c1e16]/40 rounded-sm border-2 border-[#8b5a2b]/40 border-dashed shadow-inner flex justify-center items-center text-xl"></div>
+                            <div class="text-sm text-[#3e2723]/60 italic">
+                                Sol El (Boş)
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="font-cinzel text-lg font-bold text-[#2c1e16] border-b border-[#2c1e16]/20 pb-2 mt-8 mb-4">Büyü Slotları</h2>
+                    <div class="flex gap-2">
+                        <div class="w-6 h-6 rounded-full bg-blue-800 border-2 border-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
+                        <div class="w-6 h-6 rounded-full bg-blue-800 border-2 border-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
+                        <div class="w-6 h-6 rounded-full bg-[#2c1e16]/30 border-2 border-[#2c1e16]/50"></div>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 right-0 w-24 h-24 drop-shadow-[0_8px_8px_rgba(0,0,0,0.6)] hover:-translate-y-2 hover:rotate-12 transition-all duration-300 cursor-pointer text-[#2c1e16]">
+                    <svg viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M256 16L34.13 189.65 256 512 477.87 189.65 256 16z" opacity="0.9"/>
+                        <path d="M256 16l-85.33 173.65 85.33 111 85.33-111L256 16z" fill="#3e2723"/>
+                        <path d="M170.67 189.65L256 300.65v211.35L34.13 189.65h136.54z" fill="#4e342e"/>
+                        <path d="M341.33 189.65L256 300.65v211.35l221.87-322.35H341.33z" fill="#5d4037"/>
+                        <text x="256" y="210" font-family="Cinzel, serif" font-size="80" font-weight="bold" fill="#eaddc4" text-anchor="middle" dominant-baseline="central">20</text>
+                    </svg>
+                </div>
+                
+            </div>
+            
+        </div>
+    </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const aktifKullanici = JSON.parse(localStorage.getItem('aktifKullanici'));
+
+        // Eğer giriş yapılmamışsa Han'ın kapısına (login) gönder
+        if (!aktifKullanici) {
+            window.location.href = 'login.html';
+        } 
+        // Eğer giren kişi Admin ise, URL'deki oyun ismini koruyarak detay sayfasına fırlat
+        else if (aktifKullanici.rol === 'Admin_Girisi') {
+            window.location.href = 'detay.html' + window.location.search;
+        }
+    });
+    </script>
+</body>
+</html>

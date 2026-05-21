@@ -129,6 +129,17 @@
             } else {
                 document.getElementById('game-title').innerText = "Bilinmeyen Oyun";
             }
+
+            const aktifKullanici = JSON.parse(localStorage.getItem('aktifKullanici'));
+
+            // Eğer giriş yapılmamışsa login sayfasına at
+            if (!aktifKullanici) {
+                window.location.href = 'login.html';
+            } 
+            // Eğer giren kişi normal Üye ise, URL'deki isim parametresiyle oyun ekranına fırlat
+            else if (aktifKullanici.rol === 'Uye_Girisi') {
+                window.location.href = 'oyun-ekrani.html' + window.location.search;
+            }
         });
     </script>
 </body>
